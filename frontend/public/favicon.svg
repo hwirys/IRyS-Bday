@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Halo (IRyS's nephilim halo) -->
+  <ellipse cx="32" cy="14" rx="14" ry="4" stroke="url(#halo)" stroke-width="2.5" fill="none" opacity="0.8"/>
+  <!-- Diamond gem body (hope diamond) -->
+  <polygon points="32,8 48,26 32,58 16,26" fill="url(#gem)"/>
+  <!-- Diamond top facet -->
+  <polygon points="32,8 48,26 32,30 16,26" fill="url(#facet)" opacity="0.6"/>
+  <!-- Center shine line -->
+  <line x1="32" y1="12" x2="32" y2="52" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+  <!-- Left facet line -->
+  <line x1="16" y1="26" x2="32" y2="52" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+  <!-- Right facet line -->
+  <line x1="48" y1="26" x2="32" y2="52" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+  <!-- Sparkle top -->
+  <circle cx="32" cy="6" r="1.5" fill="#fff4b8" opacity="0.9"/>
+  <!-- Sparkle left -->
+  <circle cx="13" cy="24" r="1" fill="#ffe0ec" opacity="0.7"/>
+  <!-- Sparkle right -->
+  <circle cx="51" cy="24" r="1" fill="#ffe0ec" opacity="0.7"/>
+  <defs>
+    <linearGradient id="gem" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#ee4f87"/>
+      <stop offset="50%" stop-color="#d46ba3"/>
+      <stop offset="100%" stop-color="#9b6bb0"/>
+    </linearGradient>
+    <linearGradient id="facet" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8c8d8"/>
+    </linearGradient>
+    <linearGradient id="halo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffcc55"/>
+      <stop offset="50%" stop-color="#ffe880"/>
+      <stop offset="100%" stop-color="#ffcc55"/>
+    </linearGradient>
+  </defs>
+</svg>

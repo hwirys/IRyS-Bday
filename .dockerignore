@@ -1,0 +1,11 @@
+backend/target/
+frontend/node_modules/
+frontend/dist/
+.git/
+.DS_Store
+skills.md
+*.md
+!frontend/README.md
+Origin_Certificate
+Private_key
+.env*
