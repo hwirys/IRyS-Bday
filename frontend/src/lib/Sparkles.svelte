@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { gyro } from './gyroscope.svelte.js';
 
   let particles = $state([]);
 
@@ -32,6 +33,7 @@
         height: {p.size}px;
         --delay: {p.delay}s;
         --dur: {p.duration}s;
+        translate: {gyro.active ? gyro.tiltX * 0.3 : 0}px {gyro.active ? gyro.tiltY * 0.3 : 0}px;
       "
     ></span>
   {/each}

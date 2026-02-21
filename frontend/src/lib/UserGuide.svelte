@@ -1,9 +1,15 @@
 <script>
   import { onMount } from 'svelte';
+  import { gyro, requestGyroPermission } from './gyroscope.svelte.js';
 
   const STORAGE_KEY = 'irys-bday-guide-seen';
 
   let show = $state(false);
+
+  async function enableGyro(e) {
+    e.stopPropagation();
+    await requestGyroPermission();
+  }
 
   onMount(() => {
     if (!localStorage.getItem(STORAGE_KEY)) {
@@ -79,6 +85,27 @@
             <span class="tip-desc">to watch the IRyStocrats birthday video</span>
           </div>
         </div>
+
+        {#if gyro.supported}
+          <div class="tip">
+            <span class="tip-icon">
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                <rect x="6" y="2" width="12" height="20" rx="2" stroke="#ee4f87" stroke-width="1.5"/>
+                <circle cx="12" cy="18" r="1" fill="#ee4f87" opacity="0.4"/>
+                <path d="M9 12L12 8L15 12" stroke="#ee4f87" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+                <path d="M8 6C6 7 5 9 5 11" stroke="#9b6bb0" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+                <path d="M16 6C18 7 19 9 19 11" stroke="#9b6bb0" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+              </svg>
+            </span>
+            <div>
+              <span class="tip-label">Tilt your device</span>
+              <span class="tip-desc">to shift the bubbles like a snow globe</span>
+              {#if gyro.supported && !gyro.active}
+                <button class="gyro-enable-btn" onclick={enableGyro}>Enable motion</button>
+              {/if}
+            </div>
+          </div>
+        {/if}
       </div>
 
       <button class="guide-close" onclick={dismiss}>Got it!</button>
@@ -221,6 +248,25 @@
   .help-btn:hover {
     background: rgba(255, 255, 255, 0.85);
     box-shadow: 0 3px 12px rgba(238, 79, 135, 0.12);
+  }
+
+  .gyro-enable-btn {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 3px 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(0.65rem, 1.6vw, 0.75rem);
+    font-weight: 600;
+    color: #ee4f87;
+    background: rgba(238, 79, 135, 0.08);
+    border: 1px solid rgba(238, 79, 135, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .gyro-enable-btn:hover {
+    background: rgba(238, 79, 135, 0.15);
   }
 
   @keyframes fadeIn {

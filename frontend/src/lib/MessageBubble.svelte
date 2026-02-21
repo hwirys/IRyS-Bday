@@ -1,7 +1,12 @@
 <script>
   import { onDestroy } from 'svelte';
+  import { gyro } from './gyroscope.svelte.js';
 
   const { name, message, color, left, duration, swayDuration, scale, onDone } = $props();
+
+  const depthFactor = $derived(0.5 + (scale - 0.85) * 1.67);
+  const gyroOffsetX = $derived(gyro.active ? gyro.tiltX * depthFactor : 0);
+  const gyroOffsetY = $derived(gyro.active ? gyro.tiltY * depthFactor : 0);
   const truncated = $derived(message.length > 50 ? message.slice(0, 50) + '...' : message);
 
   let expanded = $state(false);
@@ -80,7 +85,7 @@
     --sway-duration: {swayDuration}s;
     --bubble-scale: {scale};
     left: {left}%;
-    translate: {dragX}px {dragY}px;
+    translate: {dragX + gyroOffsetX}px {dragY + gyroOffsetY}px;
   "
   onpointerdown={onPointerDown}
   onpointermove={onPointerMove}
