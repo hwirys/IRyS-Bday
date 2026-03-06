@@ -15,21 +15,24 @@ COPY data/ ./data/
 COPY --from=frontend-build /app/frontend/dist ./frontend/dist
 RUN cargo build --release --manifest-path backend/Cargo.toml
 
-# Stage 3: Runtime
-FROM alpine:3.21
+# Stage 3: Runtime — nginx serves static files, proxies API to backend
+FROM nginx:alpine
+
 RUN apk add --no-cache ca-certificates
-RUN adduser -D -u 1000 appuser
+
 WORKDIR /app
 
 COPY --from=backend-build /app/backend/target/release/backend ./backend
-COPY --from=frontend-build /app/frontend/dist ./static/
-RUN chown -R appuser:appuser /app
+COPY --from=frontend-build /app/frontend/dist /app/static/
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
-USER appuser
+# Create tmp dirs for nginx
+RUN mkdir -p /tmp/nginx_body /tmp/nginx_proxy /tmp/nginx_fastcgi /tmp/nginx_uwsgi /tmp/nginx_scgi
 
-ENV BIND_ADDR=0.0.0.0:8080
-ENV STATIC_DIR=/app/static
-ENV ALLOWED_ORIGIN=http://localhost:8080
+ENV BIND_ADDR=0.0.0.0:3000
+ENV ALLOWED_ORIGIN=https://birthday5th.irys.best
 ENV RATE_LIMIT_SECS=1
 ENV RATE_LIMIT_BURST=30
 ENV MAX_CONNECTIONS=4096
@@ -42,4 +45,4 @@ ENV POWERED_BY_LINK=https://x.com/hyunja_0423
 
 EXPOSE 8080
 
-CMD ["./backend"]
+ENTRYPOINT ["./entrypoint.sh"]

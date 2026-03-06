@@ -4,6 +4,8 @@
   let visible = $state(true);
   let showList = $state(false);
   let showVideo = $state(false);
+  let showSigns = $state(false);
+  let expandedSign = $state(null);
   let allMessages = $state([]);
   let tooltipStyle = $state('');
   let tooltipText = $state('');
@@ -37,6 +39,28 @@
   function closeVideo(e) {
     e.stopPropagation();
     showVideo = false;
+  }
+
+  function openSigns(e) {
+    e.stopPropagation();
+    hideTooltip();
+    showSigns = true;
+  }
+
+  function closeSigns(e) {
+    e.stopPropagation();
+    showSigns = false;
+    expandedSign = null;
+  }
+
+  function openExpandedSign(e, src) {
+    e.stopPropagation();
+    expandedSign = src;
+  }
+
+  function closeExpandedSign(e) {
+    e.stopPropagation();
+    expandedSign = null;
   }
 
   function stopProp(e) {
@@ -174,6 +198,16 @@
           <polygon points="8,6.5 14.5,10 8,13.5" fill="rgba(238,79,135,0.45)" />
         </svg>
       </button>
+      <button class="msg-list-btn cake-pos" onclick={openSigns}
+              onmouseenter={(e) => showTooltip(e, 'Sign Gathering')} onmouseleave={hideTooltip}
+              aria-label="Sign Gathering">
+        <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
+          <rect x="3" y="2" width="14" height="10" rx="1.5" stroke="rgba(238,79,135,0.5)" stroke-width="1.5" fill="rgba(255,255,255,0.6)" />
+          <line x1="10" y1="12" x2="10" y2="19" stroke="rgba(238,79,135,0.45)" stroke-width="1.5" stroke-linecap="round" />
+          <circle cx="6.5" cy="6" r="1.2" fill="rgba(238,79,135,0.3)" />
+          <circle cx="13.5" cy="6" r="1.2" fill="rgba(100,200,220,0.4)" />
+        </svg>
+      </button>
     </div>
   </div>
 {/if}
@@ -206,6 +240,16 @@
       <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
         <rect x="1" y="3" width="18" height="14" rx="3" stroke="rgba(238,79,135,0.5)" stroke-width="1.5" fill="rgba(255,255,255,0.6)" />
         <polygon points="8,6.5 14.5,10 8,13.5" fill="rgba(238,79,135,0.45)" />
+      </svg>
+    </button>
+    <button class="icon-btn" onclick={openSigns}
+            onmouseenter={(e) => showTooltip(e, 'Sign Gathering')} onmouseleave={hideTooltip}
+            aria-label="Sign Gathering">
+      <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
+        <rect x="3" y="2" width="14" height="10" rx="1.5" stroke="rgba(238,79,135,0.5)" stroke-width="1.5" fill="rgba(255,255,255,0.6)" />
+        <line x1="10" y1="12" x2="10" y2="19" stroke="rgba(238,79,135,0.45)" stroke-width="1.5" stroke-linecap="round" />
+        <circle cx="6.5" cy="6" r="1.2" fill="rgba(238,79,135,0.3)" />
+        <circle cx="13.5" cy="6" r="1.2" fill="rgba(100,200,220,0.4)" />
       </svg>
     </button>
   </div>
@@ -246,7 +290,7 @@
       <div class="video-body">
         <div class="video-wrapper">
           <iframe
-            src="https://www.youtube.com/embed/pAKdNZfDm-c"
+            src="https://www.youtube.com/embed/X1RhHIZkK9U"
             title="IRyStocrats Birthday Video"
             frameborder="0"
             allow="encrypted-media; picture-in-picture"
@@ -254,8 +298,47 @@
             sandbox="allow-scripts allow-same-origin allow-presentation"
           ></iframe>
         </div>
+        <p class="video-credit">Edited by Jabah with the help of K Meads & Walid</p>
       </div>
     </div>
+  </div>
+{/if}
+
+<!-- Sign Gathering overlay -->
+{#if showSigns}
+  <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+  <div class="overlay" onclick={closeSigns}>
+    <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+    <div class="signs-panel" onclick={stopProp}>
+      <div class="panel-header">
+        <h2>Sign Gathering</h2>
+        <button class="close-btn" onclick={closeSigns} aria-label="Close">&times;</button>
+      </div>
+      <div class="signs-body">
+        <p class="signs-description">
+          Check out the IRySign flag — signed with love by IRyStocrats for our dear IRyS!
+        </p>
+        <p class="signs-hint">Click to see bigger</p>
+        <div class="signs-gallery">
+          <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+          <div class="sign-image-wrap" onclick={(e) => openExpandedSign(e, '/signs/sign1.jpg')}>
+            <img src="/signs/sign1.jpg" alt="Signature flag for IRyS at Hololive World Tour" class="sign-img" />
+          </div>
+          <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+          <div class="sign-image-wrap" onclick={(e) => openExpandedSign(e, '/signs/sign2.jpg')}>
+            <img src="/signs/sign2.jpg" alt="Signature flag for IRyS at Hololive World Tour" class="sign-img" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{/if}
+
+<!-- Expanded sign image overlay -->
+{#if expandedSign}
+  <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+  <div class="expanded-overlay" onclick={closeExpandedSign}>
+    <img src={expandedSign} alt="Enlarged signature flag" class="expanded-img" />
   </div>
 {/if}
 
@@ -663,6 +746,96 @@
     height: 100%;
     border: none;
     border-radius: 12px;
+  }
+
+  .video-credit {
+    text-align: center;
+    color: #b0b0b0;
+    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+    margin: 10px 0 0;
+  }
+
+  /* ---- Sign Gathering overlay panel ---- */
+  .signs-panel {
+    width: min(600px, 92vw);
+    max-height: 85vh;
+    max-height: 85dvh;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 20px;
+    border: 1.5px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 8px 40px rgba(238, 79, 135, 0.1);
+    overflow: hidden;
+  }
+
+  .signs-body {
+    overflow-y: auto;
+    padding: clamp(12px, 2.5vw, 20px);
+  }
+
+  .signs-description {
+    font-size: clamp(0.8rem, 2.2vw, 0.95rem);
+    font-weight: 500;
+    color: #6a5a7e;
+    line-height: 1.65;
+    text-align: center;
+    padding: 0 clamp(8px, 2vw, 16px);
+    margin-bottom: clamp(12px, 2.5vw, 20px);
+  }
+
+  .signs-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 2vw, 16px);
+  }
+
+  .sign-image-wrap {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1.5px solid rgba(238, 79, 135, 0.12);
+    box-shadow: 0 2px 12px rgba(238, 79, 135, 0.06);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .sign-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .signs-hint {
+    text-align: center;
+    font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+    color: #b0a0c0;
+    margin-bottom: clamp(8px, 1.5vw, 12px);
+  }
+
+  .sign-image-wrap:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(238, 79, 135, 0.15);
+  }
+
+  .expanded-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    animation: cakeFadeIn 0.2s ease-out;
+  }
+
+  .expanded-img {
+    max-width: 95vw;
+    max-height: 95vh;
+    max-height: 95dvh;
+    object-fit: contain;
+    border-radius: 8px;
   }
 
   /* Animations */

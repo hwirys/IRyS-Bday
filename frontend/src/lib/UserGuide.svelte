@@ -86,6 +86,21 @@
           </div>
         </div>
 
+        <div class="tip">
+          <span class="tip-icon">
+            <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+              <rect x="5" y="2" width="14" height="10" rx="1.5" stroke="#ee4f87" stroke-width="1.5"/>
+              <line x1="12" y1="12" x2="12" y2="21" stroke="#ee4f87" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="8" cy="6" r="1.2" fill="#ee4f87" opacity="0.4"/>
+              <circle cx="16" cy="6" r="1.2" fill="#64c8dc" opacity="0.5"/>
+            </svg>
+          </span>
+          <div>
+            <span class="tip-label">Sign Gathering button</span>
+            <span class="tip-desc">to see the IRySign flag signed by IRyStocrats</span>
+          </div>
+        </div>
+
         {#if gyro.supported}
           <div class="tip">
             <span class="tip-icon">

@@ -8,7 +8,7 @@ use std::path::PathBuf;
 use std::time::Duration;
 
 // Embed CSV at compile time — no file needed on disk at runtime
-static CSV_DATA: &str = include_str!("../../data/messages.csv");
+static CSV_DATA: &str = include_str!("../../data/birthday5th_submissions.csv");
 
 #[derive(Debug, Clone, Serialize)]
 struct Message {
